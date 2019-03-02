@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'gatsby';
 import Toggle from './Toggle';
+import Helmet from 'react-helmet';
 
 import { rhythm, scale } from '../utils/typography';
 import sun from '../assets/sun.png';
@@ -25,7 +26,7 @@ class Layout extends React.Component {
         <h1
           style={{
             ...scale(0.75),
-            marginBottom: rhythm(1.5),
+            marginBottom: 0,
             marginTop: 0,
           }}
         >
@@ -47,8 +48,9 @@ class Layout extends React.Component {
           style={{
             fontFamily: 'Montserrat, sans-serif',
             marginTop: 0,
-            marginBottom: rhythm(-1),
-            minHeight: '3.5rem',
+            marginBottom: 0,
+            height: 42, // because
+            lineHeight: '2.625rem',
           }}
         >
           <Link
@@ -66,12 +68,7 @@ class Layout extends React.Component {
     }
   }
   render() {
-    const { children, location } = this.props;
-    const rootPath = `${__PATH_PREFIX__}/`;
-    const isHomePage = location.pathname === rootPath;
-    // Keep dark/light mode switch aligned between home and post page
-    // Does this make sense? No.
-    const topPadding = isHomePage ? rhythm(1.5) : '50px';
+    const { children } = this.props;
 
     return (
       <div
@@ -82,19 +79,28 @@ class Layout extends React.Component {
           minHeight: '100vh',
         }}
       >
+        <Helmet
+          meta={[
+            {
+              name: 'theme-color',
+              content: this.state.theme === 'light' ? '#ffa8c5' : '#282c35',
+            },
+          ]}
+        />
         <div
           style={{
             marginLeft: 'auto',
             marginRight: 'auto',
             maxWidth: rhythm(24),
-            padding: `${topPadding} ${rhythm(3 / 4)}`,
+            padding: `2.625rem ${rhythm(3 / 4)}`,
           }}
         >
-          <div
+          <header
             style={{
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'baseline',
+              alignItems: 'center',
+              marginBottom: '2.625rem',
             }}
           >
             {this.renderHeader()}
@@ -130,7 +136,7 @@ class Layout extends React.Component {
             ) : (
               <div style={{ height: '24px' }} />
             )}
-          </div>
+          </header>
           {children}
         </div>
       </div>
